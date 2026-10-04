@@ -37,6 +37,8 @@ export default function App() {
   const [dragId, setDragId] = useState(null)
   const [dragOverId, setDragOverId] = useState(null)
   const inputRef = useRef(null)
+  // Touch drag (iOS Safari no soporta HTML5 drag & drop con touch)
+  const touchDrag = useRef({ id: null, overId: null })
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
@@ -154,6 +156,48 @@ export default function App() {
     setDragOverId(null)
   }
 
+  // --- Drag táctil con Pointer Events (para iOS / touch) ---
+  function onTouchDragStart(e, id) {
+    if (!canDrag || e.pointerType !== 'touch') return
+    e.preventDefault()
+    touchDrag.current.id = id
+    touchDrag.current.overId = null
+    setDragId(id)
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId)
+    } catch {}
+  }
+
+  function onTouchDragMove(e) {
+    const s = touchDrag.current
+    if (!s.id) return
+    const el = document.elementFromPoint(e.clientX, e.clientY)
+    const itemEl = el && el.closest ? el.closest('[data-todo-id]') : null
+    const overId = itemEl ? itemEl.dataset.todoId : null
+    s.overId = overId && overId !== s.id ? overId : null
+    setDragOverId(s.overId)
+  }
+
+  function onTouchDragEnd() {
+    const s = touchDrag.current
+    const { id, overId } = s
+    s.id = null
+    s.overId = null
+    setDragId(null)
+    setDragOverId(null)
+    if (id && overId && overId !== id) {
+      setTodos(prev => {
+        const from = prev.findIndex(t => t.id === id)
+        const to = prev.findIndex(t => t.id === overId)
+        if (from < 0 || to < 0 || from === to) return prev
+        const next = [...prev]
+        const [moved] = next.splice(from, 1)
+        next.splice(to, 0, moved)
+        return next
+      })
+    }
+  }
+
   return (
     <div className={`page ${dark ? 'dark' : ''}`}>
       <div className="bg-orb orb-a" />
@@ -247,6 +291,7 @@ export default function App() {
             return (
               <li
                 key={todo.id}
+                data-todo-id={todo.id}
                 draggable={canDrag}
                 onDragStart={e => onDragStart(e, todo.id)}
                 onDragOver={e => onDragOver(e, todo.id)}
@@ -256,7 +301,15 @@ export default function App() {
                   justAdded === todo.id ? 'is-entering' : ''
                 } ${isDragging ? 'is-dragging' : ''} ${isOver ? 'is-over' : ''} ${canDrag ? 'draggable' : ''}`}
               >
-                <span className="drag-handle" title="Arrastrar para reordenar" aria-hidden>⋮⋮</span>
+                <span
+                  className="drag-handle"
+                  title="Arrastrar para reordenar"
+                  aria-hidden
+                  onPointerDown={e => onTouchDragStart(e, todo.id)}
+                  onPointerMove={onTouchDragMove}
+                  onPointerUp={onTouchDragEnd}
+                  onPointerCancel={onTouchDragEnd}
+                >⋮⋮</span>
                 <button
                   className={`check ${toggled === todo.id ? 'pop' : ''}`}
                   onClick={() => toggleTodo(todo.id)}
