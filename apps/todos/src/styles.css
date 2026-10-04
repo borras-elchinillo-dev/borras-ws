@@ -285,7 +285,10 @@ body {
   --muted: #9ca3af;
   --line: #262b38;
   --shadow: 0 20px 60px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.3);
+  background: var(--bg);
+  color: var(--ink);
 }
+.page.dark .item-text { color: var(--ink); }
 .page.dark .bg-orb { opacity: 0.18; }
 .page.dark .orb-a { background: #4f46e5; }
 .page.dark .orb-b { background: #7c3aed; }
