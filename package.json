@@ -1,0 +1,1 @@
+{"description":"Monorepo personal de Borras — workspaces con apps y packages","engines":{"node":">=18"},"name":"borras-ws","private":true,"scripts":{"build":"npm run build --workspace=apps/todos","dev":"npm run dev --workspace=apps/todos","preview":"npm run preview --workspace=apps/todos"},"version":"0.1.0","workspaces":["apps/*","packages/*"]}
