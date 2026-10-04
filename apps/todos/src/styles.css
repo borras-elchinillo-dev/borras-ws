@@ -154,7 +154,9 @@ body {
   transition: all 0.22s cubic-bezier(0.22,1,0.36,1);
 }
 .chip:hover { transform: translateY(-1px); border-color: #d6d9e6; color: var(--ink); }
-.chip-active {
+.chip-active,
+.chip-active:hover,
+.chip-active:focus {
   background: var(--ink);
   color: #fff;
   border-color: var(--ink);
@@ -297,7 +299,9 @@ body {
 .page.dark .input:focus { background: #131624; }
 .page.dark .chip { background: #1e2330; border-color: var(--line); color: #d1d5db; }
 .page.dark .chip:hover { color: var(--ink); border-color: #3a4156; }
-.page.dark .chip-active { background: #f3f4f6; color: #111318; border-color: #f3f4f6; }
+.page.dark .chip-active,
+.page.dark .chip-active:hover,
+.page.dark .chip-active:focus { background: #f3f4f6; color: #111318; border-color: #f3f4f6; }
 .page.dark .item { background: #1e2330; border-color: var(--line); }
 .page.dark .item:hover { border-color: #3a4156; box-shadow: 0 8px 20px rgba(0,0,0,0.35); }
 .page.dark .check { background: transparent; border-color: #4b5563; }
