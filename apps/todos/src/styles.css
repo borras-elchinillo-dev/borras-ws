@@ -149,7 +149,7 @@ body {
   background: #fff;
   font-size: 13px;
   font-weight: 600;
-  color: var(--muted);
+  color: #4b5563;
   cursor: pointer;
   transition: all 0.22s cubic-bezier(0.22,1,0.36,1);
 }
@@ -295,7 +295,7 @@ body {
 .page.dark .card { border-color: #262b38; }
 .page.dark .input { background: #0f1117; border-color: var(--line); color: var(--ink); }
 .page.dark .input:focus { background: #131624; }
-.page.dark .chip { background: #1e2330; border-color: var(--line); color: var(--muted); }
+.page.dark .chip { background: #1e2330; border-color: var(--line); color: #d1d5db; }
 .page.dark .chip:hover { color: var(--ink); border-color: #3a4156; }
 .page.dark .chip-active { background: #f3f4f6; color: #111318; border-color: #f3f4f6; }
 .page.dark .item { background: #1e2330; border-color: var(--line); }
